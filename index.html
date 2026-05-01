@@ -1,254 +1,567 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ravi | FinTech & AI Engineer</title>
+    <title>Ravi | AI & Data Science | CA Intermediate</title>
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        light: '#f5f5f5',
+                        accent: '#8a8a8a',
+                    },
+                    transitionTimingFunction: {
+                        'expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
+                    }
+                }
+            }
+        }
+    </script>
 
-    <nav class="navbar">
-        <div class="logo">[ RAVI ]</div>
-        <div class="nav-links">
-            <a href="#about" class="hover-target">Mission</a>
-            <a href="#skills" class="hover-target">Expertise</a>
-            <a href="#projects" class="hover-target">Portfolio</a>
-            <a href="#contact" class="hover-target">Engage</a>
+    <style>
+        /* Base & Reset */
+        body {
+            background-color: #050505;
+            color: #f5f5f5;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Grain Overlay for Premium Texture */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 100;
+            pointer-events: none;
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: white;
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
+        }
+
+        /* Cursor Hover States */
+        body.hovering .cursor-dot {
+            background-color: transparent;
+        }
+        body.hovering .cursor-outline {
+            width: 80px; height: 80px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+            backdrop-filter: blur(2px);
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Text Reveal Animation */
+        .text-reveal {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s, transform 1.2s;
+        }
+        .text-reveal.active {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Magnetic Item Wrapper */
+        .magnetic-wrap {
+            display: inline-block;
+        }
+
+        /* 3D Tilt Card */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tilt-content {
+            transform: translateZ(30px);
+        }
+
+        /* Hide cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-dot, .cursor-outline { display: none; }
+            body { cursor: auto; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-dark">
+
+    <!-- Texture Overlay -->
+    <div class="noise"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 px-6 py-8 mix-blend-difference flex justify-between items-center">
+        <a href="#" class="text-xl font-medium tracking-tight magnetic hover-trigger">Ravi.</a>
+        <div class="flex gap-8 text-sm uppercase tracking-widest font-medium">
+            <a href="#about" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">About</a>
+            <a href="#skills" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">Skills</a>
+            <a href="#experience" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">Background</a>
+            <a href="#work" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">Work</a>
+            <a href="#contact" class="hover:text-accent transition-colors magnetic hover-trigger">Contact</a>
         </div>
     </nav>
 
-    <main id="smooth-wrapper">
-        <div id="smooth-content">
-            <!-- HERO SECTION -->
-            <section class="hero" id="home">
-                <div class="container">
-                    <div class="hero-top">
-                        <p class="subtitle fade-up">B.Tech AI & Data Science @ IIT Jodhpur | CA Intermediate</p>
-                        <p class="location fade-up">Based in Delhi, India</p>
-                    </div>
-                    <h1 class="title fade-up">Engineering solutions at the intersection of <span class="italic">FinTech</span>, <span class="accent">AI</span>, and <span class="italic">Data Science</span>.</h1>
-                    <div class="scroll-indicator fade-up">
-                        <p>Scroll to explore</p>
-                        <div class="line"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABOUT SECTION -->
-            <section class="about" id="about">
-                <div class="container">
-                    <h2 class="section-title fade-up">The Mission.</h2>
-                    <div class="about-grid">
-                        <div class="about-text fade-up">
-                            <p>I am currently a 3rd-year B.Tech undergraduate at the <strong>Indian Institute of Technology (IIT) Jodhpur</strong>, specializing in Artificial Intelligence and Data Science.</p>
-                            <p>Operating simultaneously as a <strong>CA Intermediate</strong> candidate under ICAI, I bridge the critical gap between complex financial accounting frameworks and next-generation machine learning.</p>
-                            <p>My current focus is architecting sophisticated FinTech ecosystems that empower financial analysts to conduct precise research, predict market trends, and automate auditing processes with unprecedented accuracy.</p>
-                        </div>
-                        <div class="about-education fade-up">
-                            <div class="edu-block">
-                                <h3>IIT Jodhpur</h3>
-                                <p>B.Tech / B.Sc in AI & Data Science</p>
-                                <span>Advanced Predictive Modeling, Computer Vision, Deep Learning</span>
-                            </div>
-                            <div class="edu-block">
-                                <h3>ICAI</h3>
-                                <p>Chartered Accountancy (CA) Intermediate</p>
-                                <span>Financial Auditing, Corporate Finance, Taxation Frameworks</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SKILLS SECTION -->
-            <section class="skills" id="skills">
-                <div class="container">
-                    <h2 class="section-title fade-up">Technical Arsenal.</h2>
-                    <div class="skills-grid fade-up">
-                        <div class="skill-category">
-                            <h3>AI & Machine Learning</h3>
-                            <div class="tags">
-                                <span>PyTorch</span>
-                                <span>TensorFlow</span>
-                                <span>Scikit-learn</span>
-                                <span>Pandas</span>
-                                <span>Numpy</span>
-                                <span>Matplotlib</span>
-                                <span>SciPy</span>
-                                <span>LLMs (Gemini / Claude)</span>
-                                <span>Qdrant (Vector DB)</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3>Backend & Cloud</h3>
-                            <div class="tags">
-                                <span>PostgreSQL</span>
-                                <span>MongoDB</span>
-                                <span>MySQL</span>
-                                <span>SQLite</span>
-                                <span>Firebase</span>
-                                <span>OpenStack</span>
-                                <span>Render</span>
-                                <span>Vercel</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3>Frontend & Design</h3>
-                            <div class="tags">
-                                <span>React</span>
-                                <span>Nuxt.js</span>
-                                <span>JavaScript / SASS</span>
-                                <span>Framer</span>
-                                <span>Figma</span>
-                                <span>Canva</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3>Tools & Ecosystems</h3>
-                            <div class="tags">
-                                <span>Web3.js</span>
-                                <span>Power BI</span>
-                                <span>GitHub Actions</span>
-                                <span>Postman</span>
-                                <span>Anaconda</span>
-                                <span>Jupyter</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PROJECTS SECTION -->
-            <section class="projects" id="projects">
-                <div class="container">
-                    <h2 class="section-title fade-up">Featured Deployments.</h2>
-                    <div class="project-grid">
-                        <!-- Project 1 -->
-                        <a href="https://github.com/Hellinferno/VouchVault-AI" target="_blank" class="project-card fade-up hover-target lg-card">
-                            <div class="project-content">
-                                <h3>VouchVault-AI</h3>
-                                <p>An autonomous financial audit agent engineered with Google Gemini 1.5 Flash. Features intensive multimodal auditing algorithms, Qdrant-based retrieval, and precise compliance verification.</p>
-                                <div class="card-tags">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Gemini Flash</span>
-                                    <span class="tech-tag">Qdrant</span>
-                                </div>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-                        
-                        <!-- Project 2 -->
-                        <a href="https://micro-cfo.vercel.app" target="_blank" class="project-card fade-up hover-target lg-card">
-                            <div class="project-content">
-                                <h3>Micro-CFO Platform</h3>
-                                <p>A complete financial intelligence platform serving small businesses. Integrating Telegram bot services (@MicroCFOBot) via advanced webhook architecture to deliver burn-rate analytics on demand.</p>
-                                <div class="card-tags">
-                                    <span class="tech-tag">Full Stack</span>
-                                    <span class="tech-tag">Vercel</span>
-                                    <span class="tech-tag">Telegram API</span>
-                                </div>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-
-                        <!-- Project 3 -->
-                        <a href="https://github.com/Hellinferno/rbi_correlation_analysis" target="_blank" class="project-card fade-up hover-target">
-                            <div class="project-content">
-                                <h3>RBI Market Analysis</h3>
-                                <p>Deep-dive data correlation models querying Reserve Bank of India data via Jupyter Notebooks to hunt asymmetric market signals.</p>
-                                <div class="card-tags">
-                                    <span class="tech-tag">Pandas / SciPy</span>
-                                    <span class="tech-tag">Jupyter</span>
-                                </div>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-
-                        <!-- Project 4 -->
-                        <a href="https://github.com/Hellinferno/Amazon-agent-hotel" target="_blank" class="project-card fade-up hover-target">
-                            <div class="project-content">
-                                <h3>Amazon-Agent-Hotel</h3>
-                                <p>Agentic AI workflows orchestrating complex travel and logistics optimizations autonomously through external APIs.</p>
-                                <div class="card-tags">
-                                    <span class="tech-tag">Python</span>
-                                    <span class="tech-tag">Agentic AI</span>
-                                </div>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-                    </div>
-
-                    <h3 class="subsection-title fade-up" style="margin-top: 6rem; margin-bottom: 2rem; font-family: var(--font-serif); font-size: 2rem;">Predictive Modeling Research</h3>
-                    <div class="project-grid">
-                        <a href="https://github.com/Hellinferno" target="_blank" class="project-card sm-card fade-up hover-target">
-                            <div class="project-content">
-                                <h3>Flight Price Prediction</h3>
-                                <p>Machine learning models forecasting dynamic aviation pricing elasticity.</p>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-                        <a href="https://github.com/Hellinferno" target="_blank" class="project-card sm-card fade-up hover-target">
-                            <div class="project-content">
-                                <h3>Credit Card Fraud Detection</h3>
-                                <p>Anomaly detection frameworks identifying fraudulent transaction topologies.</p>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-                        <a href="https://github.com/Hellinferno" target="_blank" class="project-card sm-card fade-up hover-target">
-                            <div class="project-content">
-                                <h3>Medical Insurance Forecasting</h3>
-                                <p>Actuarial predictive analytics for health baseline costs.</p>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-                        <a href="https://github.com/Hellinferno" target="_blank" class="project-card sm-card fade-up hover-target">
-                            <div class="project-content">
-                                <h3>Stock Market Data Pipeline</h3>
-                                <p>High-throughput data ingestion for equities trading algorithms.</p>
-                            </div>
-                            <div class="project-glow"></div>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CONTACT SECTION -->
-            <section class="contact" id="contact">
-                <div class="container fade-up">
-                    <h2 class="section-title">Initiate Contact.</h2>
-                    <p class="contact-text">Currently exploring opportunities where advanced ML architectures meet traditional corporate finance. Let's engineer the future of decentralized analytics.</p>
-                    <div class="contact-card">
-                        <p class="email-display">ravi832006ravi@gmail.com</p>
-                        <p class="location-display">Delhi, India</p>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://github.com/Hellinferno" target="_blank" class="hover-target">GitHub Archive</a>
-                        <a href="https://www.linkedin.com/in/raviiitcaintermidiate" target="_blank" class="hover-target">Professional Network</a>
-                        <a href="https://micro-cfo.vercel.app" target="_blank" class="hover-target">Micro-CFO Product</a>
-                    </div>
-                </div>
-            </section>
-            
-            <footer>
-                <div class="container">
-                    <p>&copy; 2026 RAVI. IIT Jodhpur | CA Protocol. Engineered for excellence.</p>
-                </div>
-            </footer>
+    <!-- Hero Section -->
+    <section class="h-screen flex flex-col justify-center px-6 md:px-20 relative">
+        <div class="z-10 mt-20">
+            <h2 class="text-accent text-sm md:text-lg uppercase tracking-[0.3em] mb-6 text-reveal">AI & Data Science @ IIT Jodhpur • CA Intermediate</h2>
+            <h1 class="text-[11vw] md:text-[9vw] leading-[0.85] font-serif font-semibold tracking-tighter text-reveal reveal-delay-1">
+                Building AI<br>
+                <span class="text-white/40 italic">Finance Tools</span> & <br>
+                Data Products.
+            </h1>
         </div>
-    </main>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-6 md:left-20 flex flex-col items-center gap-4 reveal reveal-delay-3">
+            <span class="text-xs uppercase tracking-widest text-accent origin-left -rotate-90 translate-y-12 block">Scroll</span>
+            <div class="w-[1px] h-16 bg-accent/30 overflow-hidden relative">
+                <div class="w-full h-full bg-white absolute top-0 -translate-y-full animate-[scroll-down_2s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 md:px-20 border-t border-white/5">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+            <div class="md:col-span-4">
+                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 01 About</h3>
+            </div>
+            <div class="md:col-span-8">
+                <p class="text-2xl md:text-5xl leading-tight font-light reveal">
+                    I exist at the rare intersection of <span class="text-white font-medium">analytical finance</span> and <span class="text-white font-medium">artificial intelligence</span>. 
+                </p>
+                <p class="text-lg md:text-xl text-accent mt-12 max-w-2xl leading-relaxed reveal reveal-delay-1">
+                    Currently pursuing a BSc in Applied AI & Data Science at IIT Jodhpur alongside my CA Intermediate. I leverage this dual expertise to build scalable, highly logical AI finance tools and data products. From deep machine learning models to complex taxation and auditing logic, I bridge the gap between financial fundamentals and cutting-edge tech.
+                </p>
+                
+                <div class="mt-16 flex flex-wrap gap-4 reveal reveal-delay-2">
+                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">Machine Learning</span>
+                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">Python</span>
+                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">Financial Analytics</span>
+                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">AI Agents</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Capabilities Section -->
+    <section id="skills" class="py-32 px-6 md:px-20 border-t border-white/5">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+            <div class="md:col-span-4">
+                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 02 Capabilities</h3>
+            </div>
+            <div class="md:col-span-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- AI & Tech -->
+                    <div class="reveal">
+                        <h4 class="text-xl font-serif mb-6 border-b border-white/10 pb-4">AI & Engineering</h4>
+                        <ul class="space-y-4 text-accent text-sm md:text-base">
+                            <li class="flex justify-between items-center"><span class="text-white">Python</span> <span>Advanced</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">Machine Learning</span> <span>Core Focus</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">AI Agents (LLMs)</span> <span>Specialized</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">Data Science</span> <span>Pandas/NumPy</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">System Architecture</span> <span>Intermediate</span></li>
+                        </ul>
+                    </div>
+                    <!-- Finance & Logic -->
+                    <div class="reveal reveal-delay-1">
+                        <h4 class="text-xl font-serif mb-6 border-b border-white/10 pb-4">Finance & Operations</h4>
+                        <ul class="space-y-4 text-accent text-sm md:text-base">
+                            <li class="flex justify-between items-center"><span class="text-white">Financial Analytics</span> <span>Quantitative</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">Accounting & Audit</span> <span>CA Inter Level</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">Taxation Law</span> <span>Regulatory</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">Corporate Law</span> <span>Compliance</span></li>
+                            <li class="flex justify-between items-center"><span class="text-white">Business Intelligence</span> <span>Strategic</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience & Education Section -->
+    <section id="experience" class="py-32 px-6 md:px-20 border-t border-white/5">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+            <div class="md:col-span-4">
+                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 03 Background</h3>
+                <a href="https://www.linkedin.com/in/raviiitcaintermidiate/" target="_blank" class="text-sm uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-colors magnetic hover-trigger reveal mt-4 inline-block">View LinkedIn</a>
+            </div>
+            
+            <div class="md:col-span-8 space-y-20">
+                <!-- Education Block -->
+                <div class="space-y-12">
+                    <h4 class="text-lg font-medium text-white tracking-wide uppercase reveal">Education</h4>
+                    
+                    <!-- IIT -->
+                    <div class="group reveal relative border-l border-white/20 pl-8 pb-4 hover:border-white transition-colors duration-500">
+                        <div class="absolute w-3 h-3 bg-dark border border-white rounded-full -left-[6.5px] top-1 group-hover:bg-white transition-colors duration-500"></div>
+                        <p class="text-accent text-sm tracking-widest uppercase mb-2">2025 — 2029</p>
+                        <h4 class="text-2xl font-serif mb-1">Indian Institute of Technology (IIT) Jodhpur</h4>
+                        <p class="text-white/80 mb-4">BSc in Applied AI and Data Science</p>
+                        <p class="text-accent leading-relaxed text-sm">Activities & Societies: AI Club, Hackathons, Finance Society.<br>Focusing on Python, Machine Learning, and advanced algorithmic engineering.</p>
+                    </div>
+                    
+                    <!-- CA Inter -->
+                    <div class="group reveal relative border-l border-white/20 pl-8 hover:border-white transition-colors duration-500">
+                        <div class="absolute w-3 h-3 bg-dark border border-white rounded-full -left-[6.5px] top-1 group-hover:bg-white transition-colors duration-500"></div>
+                        <p class="text-accent text-sm tracking-widest uppercase mb-2">2025 — Present</p>
+                        <h4 class="text-2xl font-serif mb-1">Institute of Chartered Accountants of India</h4>
+                        <p class="text-white/80 mb-4">CA Intermediate</p>
+                        <p class="text-accent leading-relaxed text-sm">Deep dive into Accounting, Taxation, Corporate Laws, and Auditing. Bridging the gap between raw data execution and high-level business compliance.</p>
+                    </div>
+                </div>
+
+                <!-- Certifications Block -->
+                <div class="space-y-8 pt-8 border-t border-white/5">
+                    <h4 class="text-lg font-medium text-white tracking-wide uppercase reveal">Licenses & Certifications</h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal reveal-delay-1">
+                        <!-- Cert 1 -->
+                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-[#0a0a0a]">
+                            <h5 class="font-medium mb-1">Aspire Leaders Programme</h5>
+                            <p class="text-accent text-sm">Harvard University</p>
+                        </div>
+                        <!-- Cert 2 -->
+                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-[#0a0a0a]">
+                            <h5 class="font-medium mb-1">Convolve 4.0 Pan-IIT AI/ML Hackathon</h5>
+                            <p class="text-accent text-sm">IIT Guwahati • Jan 2026</p>
+                        </div>
+                        <!-- Cert 3 -->
+                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-[#0a0a0a]">
+                            <h5 class="font-medium mb-1">5-Day AI Agents Intensive Course</h5>
+                            <p class="text-accent text-sm">Kaggle (Google) • Dec 2025</p>
+                        </div>
+                        <!-- Cert 4 -->
+                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-[#0a0a0a]">
+                            <h5 class="font-medium mb-1">Intro to Strategy Consulting Job Simulation</h5>
+                            <p class="text-accent text-sm">BCG (Forage) • Oct 2025</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Work/Projects Section -->
+    <section id="work" class="py-32 px-6 md:px-20 border-t border-white/5 bg-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-end mb-20">
+                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 04 Selected Works</h3>
+                <a href="https://github.com/Hellinferno" target="_blank" class="text-sm uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-colors magnetic hover-trigger reveal">View Github</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <!-- Project 1 -->
+                <a href="https://github.com/Hellinferno/VouchVault-AI" target="_blank" class="block group reveal hover-trigger tilt-card">
+                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">VouchVault-AI</h4>
+                    </div>
+                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
+                        <div class="pr-4">
+                            <h5 class="text-xl font-medium">Autonomous Financial Audit Agent</h5>
+                            <p class="text-accent text-sm mt-1 mb-3">Python • Gemini 1.5 Flash</p>
+                            <p class="text-white/60 text-sm leading-relaxed">Automates complex compliance checks and financial anomaly detection, leveraging advanced LLM reasoning to simulate a human auditor's logic.</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
+                            →
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <a href="https://github.com/Hellinferno/rbi_correlation_analysis" target="_blank" class="block group reveal hover-trigger tilt-card md:mt-24">
+                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Eco-Analyzer</h4>
+                    </div>
+                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
+                        <div class="pr-4">
+                            <h5 class="text-xl font-medium">Economic Data Correlation (RBI)</h5>
+                            <p class="text-accent text-sm mt-1 mb-3">Python • Data Science</p>
+                            <p class="text-white/60 text-sm leading-relaxed">Analyzes correlations across large-scale macroeconomic datasets from the RBI, uncovering hidden trends and predictive signals for financial markets.</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
+                            →
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="https://github.com/Hellinferno/business-analyst" target="_blank" class="block group reveal hover-trigger tilt-card">
+                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Business Analyst</h4>
+                    </div>
+                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
+                        <div class="pr-4">
+                            <h5 class="text-xl font-medium">AI Business Intelligence</h5>
+                            <p class="text-accent text-sm mt-1 mb-3">Python • AI Agent</p>
+                            <p class="text-white/60 text-sm leading-relaxed">An AI-powered business intelligence system that synthesizes market research and financial statements to deliver actionable, data-driven insights.</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
+                            →
+                        </span>
+                    </div>
+                </a>
+
+                 <!-- Project 4 -->
+                 <a href="https://github.com/Hellinferno/Amazon-agent-hotel" target="_blank" class="block group reveal hover-trigger tilt-card md:mt-24">
+                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Amazon Agent</h4>
+                    </div>
+                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
+                        <div class="pr-4">
+                            <h5 class="text-xl font-medium">Automated Booking Agent</h5>
+                            <p class="text-accent text-sm mt-1 mb-3">Python • AI</p>
+                            <p class="text-white/60 text-sm leading-relaxed">An intelligent, automated booking and customer interaction agent built to streamline and manage complex hospitality workflows with AI.</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
+                            →
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Project 5 -->
+                <a href="https://github.com/Hellinferno/Meta-hackathon" target="_blank" class="block group reveal hover-trigger tilt-card">
+                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Meta Hackathon</h4>
+                    </div>
+                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
+                        <div class="pr-4">
+                            <h5 class="text-xl font-medium">AI Inference Server</h5>
+                            <p class="text-accent text-sm mt-1 mb-3">Python • Pytest</p>
+                            <p class="text-white/60 text-sm leading-relaxed">A high-performance AI inference server architecture built rigorously to ensure flawless scalability, data integrity, and low-latency responses.</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
+                            →
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Project 6 -->
+                <a href="https://github.com/Hellinferno/upra" target="_blank" class="block group reveal hover-trigger tilt-card md:mt-24">
+                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Upra</h4>
+                    </div>
+                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
+                        <div class="pr-4">
+                            <h5 class="text-xl font-medium">Frontend Web App</h5>
+                            <p class="text-accent text-sm mt-1 mb-3">JavaScript</p>
+                            <p class="text-white/60 text-sm leading-relaxed">A modern, responsive frontend web application focusing on fluid user experiences, clean architectural principles, and custom UI components.</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
+                            →
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <section id="contact" class="py-32 px-6 md:px-20 border-t border-white/5 relative overflow-hidden">
+        <!-- Abstract background glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white opacity-[0.02] blur-[100px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <h3 class="text-xs uppercase tracking-widest text-accent mb-12 reveal">/ 05 Let's Connect</h3>
+                <a href="https://www.linkedin.com/in/raviiitcaintermidiate/" target="_blank" class="hover:text-accent transition-colors magnetic hover-trigger">LinkedIn</a>
+                <a href="https://github.com/Hellinferno" target="_blank" class="hover:text-accent transition-colors magnetic hover-trigger">GitHub</a>
+                <a href="mailto:hello@example.com" class="hover:text-accent transition-colors magnetic hover-trigger">Email</a>
+            </div>
+        </div>
+        
+        <div class="mt-32 text-center text-xs text-accent/50 reveal">
+            <p>© <span id="year"></span> Ravi. All rights reserved.</p>
+        </div>
+    </section>
+
+    <!-- Interactions & Scripts -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 1. Custom Cursor Logic
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        let mouseX = 0, mouseY = 0;
+        let outlineX = 0, outlineY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Dot follows instantly
+            cursorDot.style.left = `${mouseX}px`;
+            cursorDot.style.top = `${mouseY}px`;
+        });
+
+        // Smooth outline follow
+        function animateCursor() {
+            let distX = mouseX - outlineX;
+            let distY = mouseY - outlineY;
+            
+            outlineX += distX * 0.15;
+            outlineY += distY * 0.15;
+            
+            cursorOutline.style.left = `${outlineX}px`;
+            cursorOutline.style.top = `${outlineY}px`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover States for Cursor
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // 2. Scroll Reveal Logic (Intersection Observer)
+        const revealElements = document.querySelectorAll('.reveal, .text-reveal');
+        
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Reveal only once
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => revealOnScroll.observe(el));
+
+        // 3. Magnetic Buttons (Touch/Mouse Effect)
+        const magnetics = document.querySelectorAll('.magnetic');
+        
+        magnetics.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const position = btn.getBoundingClientRect();
+                const x = e.pageX - position.left - position.width / 2;
+                const y = e.pageY - position.top - position.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.4}px)`;
+            });
+            
+            btn.addEventListener('mouseout', function(e) {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // 4. 3D Tilt Effect on Cards
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element.
+                const y = e.clientY - rect.top;  // y position within the element.
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation 10deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // CSS Animation for scroll indicator
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes scroll-down {
+                0% { transform: translateY(-100%); }
+                50% { transform: translateY(0%); }
+                100% { transform: translateY(100%); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Trigger initial active states for items above fold
+        setTimeout(() => {
+            document.querySelectorAll('.text-reveal').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if(rect.top < window.innerHeight) {
+                    el.classList.add('active');
+                }
+            });
+        }, 100);
+
+    </script>
 </body>
 </html>
