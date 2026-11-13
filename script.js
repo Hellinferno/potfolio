@@ -73,17 +73,17 @@ assert entropy(p_scaled) < entropy(p_base) # alpha > 1
                         '<strong>Evidence Adaptation Engine:</strong> 12 canonical interactive tasks tracked via idempotent event persistence.'
                     ],
                     codeTitle: 'ClaimLab Data Flow',
-                    code: `PDF Note ──▶ [Anchor Engine (char offsets + SHA256)]
-                     │
-                     ▼
-┌────────────────────┴────────────────────┐
-│  Neural Orchestrator (muse-spark-1.3)   │
-└───────┬─────────────────────────┬───────┘
-        ▼                         ▼
+                    code: `PDF Note --> [Anchor Engine (char offsets + SHA256)]
+                   |
+                   v
++-----------------------------------------+
+|  Neural Orchestrator (muse-spark-1.3)   |
++-------+-------------------------+-------+
+        v                         v
 [Atomic SVG Whiteboard]   [Float64 NumPy Kernel]
  (Revisioned BoardPatch)   (Reviewed + Sandbox)
-        └───────────┬─────────────┘
-                    ▼
+        +-----------+-------------+
+                    v
      [2-Variant Mastery State Machine]`
                 },
                 verification: {
@@ -114,7 +114,7 @@ assert entropy(p_scaled) < entropy(p_base) # alpha > 1
             stack: ['Python 3.12', 'FalkorDB', 'Cypher', 'MCP (stdio)', 'FastAPI', 'React', 'Docker'],
             metrics: [
                 { val: '13 Tools', lbl: 'MCP Graph Tool Surface' },
-                { val: '6 → 0', lbl: 'PII Exposure Paths Cut' },
+                { val: '6 -> 0', lbl: 'PII Exposure Paths Cut' },
                 { val: '4 / 4', lbl: 'Critical Flows Intact' },
             ],
             tabs: {
@@ -126,7 +126,7 @@ assert entropy(p_scaled) < entropy(p_base) # alpha > 1
                     ],
                     bullets: [
                         '<strong>Hybrid Vector + Full-Text Anchoring:</strong> Maps a raw WAF/CVE alert to <code>CVE-2026-8841</code> in <code>jwt-crypto-core</code> using HNSW vector + full-text indexes.',
-                        '<strong>Multi-Hop Blast Radius:</strong> Single Cypher traversal across 5–8 hops uncovers 6 active attack paths reaching 3 PII databases.',
+                        '<strong>Multi-Hop Blast Radius:</strong> Single Cypher traversal across 5-8 hops uncovers 6 active attack paths reaching 3 PII databases.',
                         '<strong>Chokepoint Discovery:</strong> Runs <code>algo.betweenness</code> to rank <code>legacy-billing-bridge</code> (score 6.0) while protecting critical-tier <code>payment-orchestrator</code> (score 5.83).'
                     ],
                     codeTitle: 'Multi-Hop Attack Path Cypher Query',
@@ -178,14 +178,14 @@ ORDER BY score DESC;
                         '<strong>Dual-Client Compatibility:</strong> Same MCP server works from the React console, CLI, and Claude Desktop.'
                     ],
                     codeTitle: 'AegisGraph Component Flow',
-                    code: `Console UI ──(REST+SSE)──▶ FastAPI ──▶ AgentRunner (Deterministic / LLM)
-                                              │
-                                         (MCP stdio)
-                                              ▼
-                                  AegisGraph MCP (13 tools)
-                                              │
-                                              ▼
-                       FalkorDB [prod | memory | GRAPH.COPY sandbox]`
+                    code: `Console UI --(REST+SSE)--> FastAPI --> AgentRunner (Deterministic / LLM)
+                                            |
+                                       (MCP stdio)
+                                            v
+                                AegisGraph MCP (13 tools)
+                                            |
+                                            v
+                     FalkorDB [prod | memory | GRAPH.COPY sandbox]`
                 },
                 verification: {
                     heading: 'Demo Incident Verification & Walkthrough',
@@ -381,54 +381,30 @@ cd frontend && npm install && npm run dev  # http://localhost:5173`
     };
 
     const htmlEl = document.documentElement;
-    const themeButtons = document.querySelectorAll('[data-theme-choice]');
-    const motionButtons = document.querySelectorAll('[data-motion-toggle]');
+    const themeToggleBtn = document.getElementById('theme-toggle');
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileDrawer = document.getElementById('mobile-drawer');
 
-    // ── Theme Management ──
-    function applyTheme(themeName) {
-        const valid = ['obsidian', 'editorial', 'daylight'].includes(themeName) ? themeName : 'obsidian';
+    // ── Dark / Light Theme Toggle ──
+    function applyTheme(mode) {
+        const valid = mode === 'light' ? 'light' : 'dark';
         htmlEl.setAttribute('data-theme', valid);
-        localStorage.setItem('ravi_theme', valid);
-
-        themeButtons.forEach((btn) => {
-            const isMatch = btn.getAttribute('data-theme-choice') === valid;
-            btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
-        });
-
-        if (window.SymbiontControl && typeof window.SymbiontControl.setTheme === 'function') {
-            window.SymbiontControl.setTheme(valid);
+        localStorage.setItem('ravi_theme_mode', valid);
+        if (themeToggleBtn) {
+            themeToggleBtn.textContent = valid === 'dark' ? 'Light Mode' : 'Dark Mode';
+            themeToggleBtn.setAttribute('aria-pressed', valid === 'light' ? 'true' : 'false');
         }
     }
 
-    const savedTheme = localStorage.getItem('ravi_theme') || 'obsidian';
-    applyTheme(savedTheme);
+    const savedMode = localStorage.getItem('ravi_theme_mode') || 'dark';
+    applyTheme(savedMode);
 
-    themeButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            applyTheme(btn.getAttribute('data-theme-choice'));
-        });
-    });
-
-    // ── Motion Toggle Management ──
-    function updateMotionLabels() {
-        const running = window.SymbiontControl ? window.SymbiontControl.isRunning() : true;
-        motionButtons.forEach((btn) => {
-            btn.textContent = running ? 'Pause BG' : 'Play BG';
-            btn.setAttribute('aria-pressed', running ? 'false' : 'true');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const current = htmlEl.getAttribute('data-theme');
+            applyTheme(current === 'dark' ? 'light' : 'dark');
         });
     }
-
-    motionButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            if (window.SymbiontControl && typeof window.SymbiontControl.toggleMotion === 'function') {
-                window.SymbiontControl.toggleMotion();
-                updateMotionLabels();
-            }
-        });
-    });
-    updateMotionLabels();
 
     // ── Mobile Drawer ──
     if (mobileMenuBtn && mobileDrawer) {
@@ -452,7 +428,7 @@ cd frontend && npm install && npm run dev  # http://localhost:5173`
         });
     }
 
-    // ── Interactive Case Studies Workbench ──
+    // ── Case Studies Workbench ──
     let activeStudy = 'claimlab';
     let activeTab = 'overview';
 
@@ -490,9 +466,9 @@ cd frontend && npm install && npm run dev  # http://localhost:5173`
         studyPanel.innerHTML = `
             <div class="case-grid">
                 <div>
-                    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">
-                        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent-primary);text-transform:uppercase;letter-spacing:0.08em;">${study.title}</span>
-                        <a href="${study.repoUrl}" target="_blank" rel="noopener noreferrer" class="link-pill primary">View Repository ↗</a>
+                    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;">
+                        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">${study.title}</span>
+                        <a href="${study.repoUrl}" target="_blank" rel="noopener noreferrer" class="link-pill primary">Repository ↗</a>
                     </div>
                     <h3>${tab.heading}</h3>
                     ${paragraphsHtml}
@@ -500,10 +476,10 @@ cd frontend && npm install && npm run dev  # http://localhost:5173`
                     <div class="case-metrics-row">${metricsHtml}</div>
                 </div>
                 <div>
-                    <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);margin-bottom:8px;">// ${tab.codeTitle}</div>
+                    <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-muted);margin-bottom:8px;">// ${tab.codeTitle}</div>
                     <pre class="code-block"><code>${escapeHtml(tab.code)}</code></pre>
-                    <div style="margin-top:16px;">
-                        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);margin-bottom:8px;">VERIFIED STACK</div>
+                    <div style="margin-top:14px;">
+                        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);margin-bottom:8px;">STACK</div>
                         <div class="tag-row">${stackHtml}</div>
                     </div>
                 </div>
@@ -539,42 +515,24 @@ cd frontend && npm install && npm run dev  # http://localhost:5173`
 
     renderCaseStudy();
 
-    // ── Copy Email Helper ──
+    // ── Copy Email ──
     const copyEmailBtn = document.getElementById('copy-email-btn');
     if (copyEmailBtn) {
         copyEmailBtn.addEventListener('click', async () => {
             const email = 'b25bs1273@iitj.ac.in';
             try {
                 await navigator.clipboard.writeText(email);
-                copyEmailBtn.textContent = 'Copied b25bs1273@iitj.ac.in ✓';
+                copyEmailBtn.textContent = 'Copied ✓';
                 setTimeout(() => {
                     copyEmailBtn.textContent = 'Copy Email';
-                }, 2200);
+                }, 2000);
             } catch {
                 copyEmailBtn.textContent = email;
             }
         });
     }
 
-    // ── Scroll Reveal & Active Nav Scroll-Spy ──
-    const revealEls = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const revealObserver = new IntersectionObserver(
-            (entries, observer) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
-        );
-        revealEls.forEach((el) => revealObserver.observe(el));
-    } else {
-        revealEls.forEach((el) => el.classList.add('is-visible'));
-    }
-
+    // ── Active Nav Scroll-Spy ──
     const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
     const sections = Array.from(navLinks)
         .map((a) => document.querySelector(a.getAttribute('href')))
