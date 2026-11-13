@@ -1,584 +1,888 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" data-theme="obsidian">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ravi | AI & Data Science | CA Intermediate</title>
-    
+    <title>Ravi — Applied AI &amp; Software Engineering Portfolio | IIT Jodhpur</title>
+    <meta name="description" content="Portfolio of Ravi, Applied AI &amp; Data Science undergraduate at IIT Jodhpur and CA Intermediate candidate. Builder of ClaimLab, AegisGraph, StudyLab, and FinMod-Agent.">
+    <meta name="theme-color" content="#06080d">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Ravi — Applied AI &amp; Software Engineering Portfolio">
+    <meta property="og:description" content="Building intelligent systems that solve real problems: AI engineering, hybrid RAG, MCP graph agents, and deterministic numerical &amp; financial software.">
+    <meta property="og:type" content="website">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    colors: {
-                        dark: '#050505',
-                        light: '#f5f5f5',
-                        accent: '#8a8a8a',
-                    },
-                    transitionTimingFunction: {
-                        'expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        /* Base & Reset */
-        body {
-            background-color: #050505;
-            color: #f5f5f5;
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        /* Grain Overlay for Premium Texture */
-        .noise {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Custom Cursor */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 100;
-            pointer-events: none;
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
-        }
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: white;
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
-        }
-
-        /* Cursor Hover States */
-        body.hovering .cursor-dot {
-            background-color: transparent;
-        }
-        body.hovering .cursor-outline {
-            width: 80px; height: 80px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: transparent;
-            backdrop-filter: blur(2px);
-        }
-
-        /* Scroll Reveal Animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-
-        /* Text Reveal Animation */
-        .text-reveal {
-            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: clip-path 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s, transform 1.2s;
-        }
-        .text-reveal.active {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Symbiont Canvas Background — Fixed fullscreen */
-        #symbiont-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .magnetic-wrap {
-            display: inline-block;
-        }
-
-        /* 3D Tilt Card */
-        .tilt-card {
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .tilt-content {
-            transform: translateZ(30px);
-        }
-
-        /* Hide cursor on touch devices */
-        @media (hover: none) and (pointer: coarse) {
-            .cursor-dot, .cursor-outline { display: none; }
-            body { cursor: auto; }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-    </style>
+    <!-- Linked Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="antialiased selection:bg-white selection:text-dark">
+<body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
-    <!-- Symbiont Canvas Background (fullscreen, all pages) -->
-    <canvas id="symbiont-canvas"></canvas>
+    <!-- Theme-Aware Generative Canvas -->
+    <canvas id="symbiont-canvas" aria-hidden="true"></canvas>
 
-    <!-- Texture Overlay -->
-    <div class="noise"></div>
+    <div class="site-shell">
+        <!-- Sticky Navigation -->
+        <header class="site-header">
+            <div class="container nav-inner">
+                <a href="#hero" class="brand">
+                    <span class="brand-dot" aria-hidden="true"></span>
+                    <span>Ravi.</span>
+                </a>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-outline" id="cursor-outline"></div>
+                <nav aria-label="Primary Navigation">
+                    <ul class="nav-links">
+                        <li><a href="#about">01. About</a></li>
+                        <li><a href="#projects">02. Projects</a></li>
+                        <li><a href="#case-studies">03. Case Studies</a></li>
+                        <li><a href="#skills">04. Skills</a></li>
+                        <li><a href="#opensource">05. Open Source &amp; Certs</a></li>
+                        <li><a href="#education">06. Education</a></li>
+                        <li><a href="#contact">07. Contact</a></li>
+                    </ul>
+                </nav>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-40 px-6 py-8 mix-blend-difference flex justify-between items-center">
-        <a href="#" class="text-xl font-medium tracking-tight magnetic hover-trigger">Ravi.</a>
-        <div class="flex gap-8 text-sm uppercase tracking-widest font-medium">
-            <a href="#about" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">About</a>
-            <a href="#skills" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">Skills</a>
-            <a href="#experience" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">Background</a>
-            <a href="#work" class="hidden md:block hover:text-accent transition-colors magnetic hover-trigger">Work</a>
-            <a href="#contact" class="hover:text-accent transition-colors magnetic hover-trigger">Contact</a>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="h-screen flex flex-col justify-center px-6 md:px-20 relative">
-        <div class="z-10 mt-20">
-            <h2 class="text-accent text-sm md:text-lg uppercase tracking-[0.3em] mb-6 text-reveal">AI & Data Science @ IIT Jodhpur • CA Intermediate</h2>
-            <h1 class="text-[11vw] md:text-[9vw] leading-[0.85] font-serif font-semibold tracking-tighter text-reveal reveal-delay-1">
-                Building AI<br>
-                <span class="text-white/40 italic">Finance Tools</span> & <br>
-                Data Products.
-            </h1>
-        </div>
-        
-        <!-- Scroll indicator -->
-        <div class="absolute bottom-10 left-6 md:left-20 flex flex-col items-center gap-4 reveal reveal-delay-3">
-            <span class="text-xs uppercase tracking-widest text-accent origin-left -rotate-90 translate-y-12 block">Scroll</span>
-            <div class="w-[1px] h-16 bg-accent/30 overflow-hidden relative">
-                <div class="w-full h-full bg-white absolute top-0 -translate-y-full animate-[scroll-down_2s_ease-in-out_infinite]"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-32 px-6 md:px-20 border-t border-white/5">
-        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
-            <div class="md:col-span-4">
-                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 01 About</h3>
-            </div>
-            <div class="md:col-span-8">
-                <p class="text-2xl md:text-5xl leading-tight font-light reveal">
-                    I exist at the rare intersection of <span class="text-white font-medium">analytical finance</span> and <span class="text-white font-medium">artificial intelligence</span>. 
-                </p>
-                <p class="text-lg md:text-xl text-accent mt-12 max-w-2xl leading-relaxed reveal reveal-delay-1">
-                    Currently pursuing a BSc in Applied AI & Data Science at IIT Jodhpur alongside my CA Intermediate. I leverage this dual expertise to build scalable, highly logical AI finance tools and data products. From deep machine learning models to complex taxation and auditing logic, I bridge the gap between financial fundamentals and cutting-edge tech.
-                </p>
-                
-                <div class="mt-16 flex flex-wrap gap-4 reveal reveal-delay-2">
-                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">Machine Learning</span>
-                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">Python</span>
-                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">Financial Analytics</span>
-                    <span class="px-6 py-3 rounded-full border border-white/10 text-sm hover:bg-white hover:text-dark transition-colors duration-500 cursor-none hover-trigger">AI Agents</span>
+                <div class="nav-controls">
+                    <div class="theme-switcher" role="group" aria-label="Visual Theme Switcher">
+                        <button type="button" class="theme-btn" data-theme-choice="obsidian" aria-pressed="true" title="Obsidian Symbiont Dark">Obsidian</button>
+                        <button type="button" class="theme-btn" data-theme-choice="editorial" aria-pressed="false" title="Editorial Quant Dark">Editorial</button>
+                        <button type="button" class="theme-btn" data-theme-choice="daylight" aria-pressed="false" title="Daylight Lab Light">Daylight</button>
+                    </div>
+                    <button type="button" class="icon-btn" data-motion-toggle aria-pressed="false" title="Toggle background particle animation">Pause BG</button>
+                    <a href="assets/Ravi_Resume.pdf" download="Ravi_Resume.pdf" class="btn-nav-resume">Resume PDF ↓</a>
+                    <button type="button" id="mobile-menu-btn" class="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-drawer">Menu</button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Skills & Capabilities Section -->
-    <section id="skills" class="py-32 px-6 md:px-20 border-t border-white/5">
-        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
-            <div class="md:col-span-4">
-                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 02 Capabilities</h3>
-            </div>
-            <div class="md:col-span-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <!-- AI & Tech -->
-                    <div class="reveal">
-                        <h4 class="text-xl font-serif mb-6 border-b border-white/10 pb-4">AI & Engineering</h4>
-                        <ul class="space-y-4 text-accent text-sm md:text-base">
-                            <li class="flex justify-between items-center"><span class="text-white">Python</span> <span>Advanced</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">Machine Learning</span> <span>Core Focus</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">AI Agents (LLMs)</span> <span>Specialized</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">Data Science</span> <span>Pandas/NumPy</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">System Architecture</span> <span>Intermediate</span></li>
-                        </ul>
-                    </div>
-                    <!-- Finance & Logic -->
-                    <div class="reveal reveal-delay-1">
-                        <h4 class="text-xl font-serif mb-6 border-b border-white/10 pb-4">Finance & Operations</h4>
-                        <ul class="space-y-4 text-accent text-sm md:text-base">
-                            <li class="flex justify-between items-center"><span class="text-white">Financial Analytics</span> <span>Quantitative</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">Accounting & Audit</span> <span>CA Inter Level</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">Taxation Law</span> <span>Regulatory</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">Corporate Law</span> <span>Compliance</span></li>
-                            <li class="flex justify-between items-center"><span class="text-white">Business Intelligence</span> <span>Strategic</span></li>
-                        </ul>
-                    </div>
+            <!-- Mobile Drawer -->
+            <div id="mobile-drawer" class="mobile-drawer">
+                <div class="mobile-drawer-links">
+                    <a href="#about">01. About</a>
+                    <a href="#projects">02. Projects</a>
+                    <a href="#case-studies">03. Case Studies</a>
+                    <a href="#skills">04. Skills</a>
+                    <a href="#opensource">05. Open Source &amp; Certs</a>
+                    <a href="#education">06. Education</a>
+                    <a href="#contact">07. Contact</a>
+                    <a href="assets/Ravi_Resume.pdf" download="Ravi_Resume.pdf">Resume PDF ↓</a>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;">
+                    <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-muted);">Background Motion:</span>
+                    <button type="button" class="icon-btn" data-motion-toggle aria-pressed="false">Pause BG</button>
                 </div>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <!-- Experience & Education Section -->
-    <section id="experience" class="py-32 px-6 md:px-20 border-t border-white/5">
-        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
-            <div class="md:col-span-4">
-                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 03 Background</h3>
-                <a href="https://www.linkedin.com/in/raviiitcaintermidiate/" target="_blank" class="text-sm uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-colors magnetic hover-trigger reveal mt-4 inline-block">View LinkedIn</a>
-            </div>
-            
-            <div class="md:col-span-8 space-y-20">
-                <!-- Education Block -->
-                <div class="space-y-12">
-                    <h4 class="text-lg font-medium text-white tracking-wide uppercase reveal">Education</h4>
-                    
-                    <!-- IIT -->
-                    <div class="group reveal relative border-l border-white/20 pl-8 pb-4 hover:border-white transition-colors duration-500">
-                        <div class="absolute w-3 h-3 bg-dark border border-white rounded-full -left-[6.5px] top-1 group-hover:bg-white transition-colors duration-500"></div>
-                        <p class="text-accent text-sm tracking-widest uppercase mb-2">2025 — 2029</p>
-                        <h4 class="text-2xl font-serif mb-1">Indian Institute of Technology (IIT) Jodhpur</h4>
-                        <p class="text-white/80 mb-4">BSc in Applied AI and Data Science</p>
-                        <p class="text-accent leading-relaxed text-sm">Activities & Societies: AI Club, Hackathons, Finance Society.<br>Focusing on Python, Machine Learning, and advanced algorithmic engineering.</p>
-                    </div>
-                    
-                    <!-- CA Inter -->
-                    <div class="group reveal relative border-l border-white/20 pl-8 hover:border-white transition-colors duration-500">
-                        <div class="absolute w-3 h-3 bg-dark border border-white rounded-full -left-[6.5px] top-1 group-hover:bg-white transition-colors duration-500"></div>
-                        <p class="text-accent text-sm tracking-widest uppercase mb-2">2025 — Present</p>
-                        <h4 class="text-2xl font-serif mb-1">Institute of Chartered Accountants of India</h4>
-                        <p class="text-white/80 mb-4">CA Intermediate</p>
-                        <p class="text-accent leading-relaxed text-sm">Deep dive into Accounting, Taxation, Corporate Laws, and Auditing. Bridging the gap between raw data execution and high-level business compliance.</p>
+        <main id="main-content">
+            <!-- 01. HERO SECTION -->
+            <section id="hero" class="hero">
+                <div class="container">
+                    <div class="hero-grid">
+                        <div>
+                            <div class="hero-pill">
+                                <span>MLH Fellowship Candidate</span>
+                                <span>·</span>
+                                <span>IIT Jodhpur · CA Intermediate</span>
+                            </div>
+
+                            <h1 class="hero-title">
+                                Building <span class="accent-word">intelligent systems</span> that solve real problems.
+                            </h1>
+
+                            <p class="hero-copy">
+                                I'm <strong>Ravi</strong>, an Applied AI and Data Science undergraduate at <strong>IIT Jodhpur</strong>. I build AI-powered applications, agentic systems, retrieval pipelines, and deterministic software tools.
+                            </p>
+
+                            <p class="hero-tags">
+                                AI Engineering · Machine Learning · Open Source · Software Development
+                            </p>
+
+                            <div class="hero-actions">
+                                <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+                                <a href="https://github.com/Hellinferno" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub (@Hellinferno) ↗</a>
+                                <a href="assets/Ravi_Resume.pdf" download="Ravi_Resume.pdf" class="btn btn-ghost">Download Resume (PDF)</a>
+                                <a href="resume.html" class="btn btn-ghost">Web Resume</a>
+                            </div>
+                        </div>
+
+                        <!-- Engineering Telemetry & Visual Direction Picker -->
+                        <aside class="hero-panel" aria-label="Engineering Summary and Theme Selector">
+                            <div class="panel-header">
+                                <span>SYS://PORTFOLIO.TELEMETRY</span>
+                                <span class="status-live">Verified Repos</span>
+                            </div>
+
+                            <div class="telemetry-grid">
+                                <div class="telemetry-stat">
+                                    <div class="telemetry-value">4 Core</div>
+                                    <div class="telemetry-label">Flagship AI &amp; Systems Builds</div>
+                                </div>
+                                <div class="telemetry-stat">
+                                    <div class="telemetry-value">163+</div>
+                                    <div class="telemetry-label">Automated Pytest Checks</div>
+                                </div>
+                                <div class="telemetry-stat">
+                                    <div class="telemetry-value">13 MCP</div>
+                                    <div class="telemetry-label">FalkorDB Graph Tools</div>
+                                </div>
+                                <div class="telemetry-stat">
+                                    <div class="telemetry-value">7 Certs</div>
+                                    <div class="telemetry-label">Anthropic, Harvard &amp; IITG</div>
+                                </div>
+                            </div>
+
+                            <div class="theme-preview-box">
+                                <p>// Choose Visual Direction (live preview):</p>
+                                <div class="theme-pills-inline">
+                                    <button type="button" class="theme-pill-card" data-theme-choice="obsidian" aria-pressed="true">
+                                        <strong>Obsidian</strong>
+                                        <span>Systems Dark</span>
+                                    </button>
+                                    <button type="button" class="theme-pill-card" data-theme-choice="editorial" aria-pressed="false">
+                                        <strong>Editorial</strong>
+                                        <span>Serif &amp; Amber</span>
+                                    </button>
+                                    <button type="button" class="theme-pill-card" data-theme-choice="daylight" aria-pressed="false">
+                                        <strong>Daylight</strong>
+                                        <span>Research Paper</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </aside>
                     </div>
                 </div>
+            </section>
 
-                <!-- Certifications Block -->
-                <div class="space-y-8 pt-8 border-t border-white/5">
-                    <h4 class="text-lg font-medium text-white tracking-wide uppercase reveal">Licenses & Certifications</h4>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 reveal reveal-delay-1">
-                        <!-- Cert 1 -->
-                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-white/[0.03]">
-                            <h5 class="font-medium mb-1">Aspire Leaders Programme</h5>
-                            <p class="text-accent text-sm">Harvard University</p>
+            <!-- 02. ABOUT & ENGINEERING JOURNEY -->
+            <section id="about" class="section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 01 About &amp; Engineering Journey</span>
+                            <h2 class="section-title">Grounded AI systems, verified by deterministic code.</h2>
                         </div>
-                        <!-- Cert 2 -->
-                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-white/[0.03]">
-                            <h5 class="font-medium mb-1">Convolve 4.0 Pan-IIT AI/ML Hackathon</h5>
-                            <p class="text-accent text-sm">IIT Guwahati • Jan 2026</p>
+                    </div>
+
+                    <div class="about-grid">
+                        <div class="about-prose card reveal">
+                            <p>
+                                I am pursuing a <strong>B.Sc. in Applied AI and Data Science at IIT Jodhpur (2025–2029)</strong> alongside my <strong>CA Intermediate (ICAI)</strong> qualification. That dual training shapes how I design software: I treat probabilistic language models as orchestrators that must be anchored to deterministic verification layers.
+                            </p>
+                            <p>
+                                Across my recent builds, that principle shows up everywhere—backing an AI tutor with float64 NumPy invariants in <strong>ClaimLab</strong>, gating incident remediation behind <code>GRAPH.COPY</code> counterfactual sandboxes in <strong>AegisGraph</strong>, enforcing AST-allowlisted <code>python -I -S</code> sandboxes with zero false-verified answers in <strong>StudyLab</strong>, and logging every valuation calculation into an immutable audit trail in <strong>FinMod-Agent</strong>.
+                            </p>
+                            <p style="margin-bottom:0;">
+                                Outside AI pipelines, I also ship full-stack and systems software in <strong>TypeScript, React 19, FastAPI, FalkorDB, SQLite/D1, and Rust</strong>, with automated CI suites and reproducible local test harnesses.
+                            </p>
                         </div>
-                        <!-- Cert 3 -->
-                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-white/[0.03]">
-                            <h5 class="font-medium mb-1">5-Day AI Agents Intensive Course</h5>
-                            <p class="text-accent text-sm">Kaggle (Google) • Dec 2025</p>
-                        </div>
-                        <!-- Cert 4 -->
-                        <div class="p-6 border border-white/10 rounded-sm hover:border-white/40 transition-colors bg-white/[0.03]">
-                            <h5 class="font-medium mb-1">Intro to Strategy Consulting Job Simulation</h5>
-                            <p class="text-accent text-sm">BCG (Forage) • Oct 2025</p>
+
+                        <div class="journey-list reveal">
+                            <div class="journey-item">
+                                <h3>01 · Agentic Systems &amp; MCP Guardrails</h3>
+                                <p>Designing tool-calling agents where safety boundaries live in deterministic tool code and database sandboxes rather than fragile prompt instructions.</p>
+                            </div>
+                            <div class="journey-item">
+                                <h3>02 · Hybrid Retrieval &amp; Grounded Reasoning</h3>
+                                <p>Building sparse + dense retrieval pipelines with character-offset citations, epistemic tags, and low-confidence refusal gates.</p>
+                            </div>
+                            <div class="journey-item">
+                                <h3>03 · Quantitative &amp; Financial Engineering</h3>
+                                <p>Translating corporate finance, DCF/WACC valuation, and auditing logic into strongly typed, unit-tested Python and Rust applications.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
+            <!-- 03. FEATURED PROJECTS -->
+            <section id="projects" class="section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 02 Featured Projects</span>
+                            <h2 class="section-title">Selected Engineering Systems</h2>
+                        </div>
+                        <a href="https://github.com/Hellinferno?tab=repositories" target="_blank" rel="noopener noreferrer" class="link-pill primary">All Repositories on GitHub ↗</a>
+                    </div>
+
+                    <div class="projects-grid">
+                        <!-- Project 1: ClaimLab -->
+                        <article class="card project-card reveal">
+                            <div class="project-media">
+                                <img src="assets/claimlab-workspace.png" alt="ClaimLab interactive whiteboard and numerical experiment workspace screenshot" loading="lazy">
+                                <span class="project-badge">123 Offline + 2 Live Tests · CI Passing</span>
+                            </div>
+                            <div class="project-body">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">ClaimLab</h3>
+                                </div>
+                                <div class="project-subtitle">AI-Powered Teaching &amp; Verified Numerical Learning Workstation</div>
+                                <p class="project-desc">
+                                    Replaces conversational AI guesswork with verified scientific computing—coupling Meta's <code>muse-spark-1.3</code> model with a transactional SVG whiteboard, three float64 NumPy labs, and sandboxed paper experiments.
+                                </p>
+                                <ul class="project-highlights">
+                                    <li><strong>LLM Orchestration:</strong> Epistemic tagging (<code>[Source]</code>, <code>[Experiment]</code>, <code>[Background]</code>) and atomic <code>BoardPatch</code> whiteboard state machine.</li>
+                                    <li><strong>Verified Numerical Workflows:</strong> Softmax sensitivity, attention dimension scaling, and causal masking validated within <code>1e-10</code> scalar reference tolerance.</li>
+                                    <li><strong>Adaptive Learning &amp; Security:</strong> 2-variant mastery progression, HMAC-SHA256 tenant isolation, CSRF protection, and idempotency fingerprinting.</li>
+                                </ul>
+                                <div class="tag-row">
+                                    <span class="tag">Python 3.12</span>
+                                    <span class="tag">FastAPI</span>
+                                    <span class="tag">React 19</span>
+                                    <span class="tag">TypeScript</span>
+                                    <span class="tag">NumPy float64</span>
+                                    <span class="tag">pytest</span>
+                                </div>
+                                <div class="project-footer">
+                                    <button type="button" class="link-pill primary" data-inspect-study="claimlab">Inspect Case Study →</button>
+                                    <a href="https://github.com/Hellinferno/ClaimLab" target="_blank" rel="noopener noreferrer" class="link-pill">GitHub Repo ↗</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Project 2: AegisGraph -->
+                        <article class="card project-card reveal">
+                            <div class="project-media">
+                                <div class="svg-preview-stage" role="img" aria-label="AegisGraph multi-hop attack graph from CVE-2026-8841 through legacy-billing-bridge to PII databases">
+                                    <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#94a3b8;">
+                                        <span>INC-2026-091 · CVE-2026-8841</span>
+                                        <span style="color:#34d399;">EXPOSURE: 6 → 0 PATHS</span>
+                                    </div>
+                                    <svg viewBox="0 0 520 190" width="100%" height="145" aria-hidden="true">
+                                        <defs>
+                                            <marker id="arrow-emerald" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                                <path d="M0,0 L6,3 L0,6 Z" fill="#10b981"/>
+                                            </marker>
+                                            <marker id="arrow-rose" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                                <path d="M0,0 L6,3 L0,6 Z" fill="#f43f5e"/>
+                                            </marker>
+                                        </defs>
+                                        <!-- Edges -->
+                                        <line x1="88" y1="95" x2="148" y2="95" stroke="#10b981" stroke-width="1.8" marker-end="url(#arrow-emerald)"/>
+                                        <line x1="232" y1="80" x2="292" y2="48" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-rose)"/>
+                                        <line x1="232" y1="110" x2="292" y2="142" stroke="#10b981" stroke-width="1.8" marker-end="url(#arrow-emerald)"/>
+                                        <line x1="395" y1="48" x2="430" y2="48" stroke="#f43f5e" stroke-width="1.8" marker-end="url(#arrow-rose)"/>
+                                        <line x1="395" y1="142" x2="430" y2="142" stroke="#10b981" stroke-width="1.8" marker-end="url(#arrow-emerald)"/>
+                                        <!-- Nodes -->
+                                        <rect x="8" y="73" width="80" height="44" rx="7" fill="#111827" stroke="#f43f5e" stroke-width="1.5"/>
+                                        <text x="48" y="92" fill="#fda4af" font-size="9" text-anchor="middle">CVE-2026-8841</text>
+                                        <text x="48" y="106" fill="#94a3b8" font-size="8" text-anchor="middle">jwt-crypto</text>
+
+                                        <rect x="152" y="73" width="80" height="44" rx="7" fill="#111827" stroke="#38bdf8" stroke-width="1.5"/>
+                                        <text x="192" y="92" fill="#bae6fd" font-size="9" text-anchor="middle">auth-token</text>
+                                        <text x="192" y="106" fill="#94a3b8" font-size="8" text-anchor="middle">origin svc</text>
+
+                                        <rect x="295" y="24" width="100" height="46" rx="7" fill="#1f1218" stroke="#f43f5e" stroke-width="1.8"/>
+                                        <text x="345" y="43" fill="#fda4af" font-size="8.5" text-anchor="middle">legacy-billing</text>
+                                        <text x="345" y="57" fill="#f43f5e" font-size="7.5" text-anchor="middle">btw: 6.0 · SEVER</text>
+
+                                        <rect x="295" y="118" width="100" height="46" rx="7" fill="#0d1f1a" stroke="#10b981" stroke-width="1.5"/>
+                                        <text x="345" y="137" fill="#6ee7b7" font-size="8.5" text-anchor="middle">payment-orch</text>
+                                        <text x="345" y="151" fill="#34d399" font-size="7.5" text-anchor="middle">tier: CRITICAL</text>
+
+                                        <rect x="434" y="24" width="78" height="46" rx="7" fill="#111827" stroke="#94a3b8" stroke-width="1.2"/>
+                                        <text x="473" y="43" fill="#e2e8f0" font-size="8.5" text-anchor="middle">3 PII DBs</text>
+                                        <text x="473" y="57" fill="#34d399" font-size="7.5" text-anchor="middle">0 paths left</text>
+
+                                        <rect x="434" y="118" width="78" height="46" rx="7" fill="#111827" stroke="#10b981" stroke-width="1.2"/>
+                                        <text x="473" y="137" fill="#e2e8f0" font-size="8.5" text-anchor="middle">Checkout</text>
+                                        <text x="473" y="151" fill="#34d399" font-size="7.5" text-anchor="middle">4/4 Intact</text>
+                                    </svg>
+                                    <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#64748b;">
+                                        <span>FalkorDB · GRAPH.COPY Sandbox</span>
+                                        <span>13 MCP Tools · ActionAudit</span>
+                                    </div>
+                                </div>
+                                <span class="project-badge">WeMakeDevs × FalkorDB Hackathon</span>
+                            </div>
+                            <div class="project-body">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">AegisGraph</h3>
+                                </div>
+                                <div class="project-subtitle">MCP-Native Graph Incident-Response Agent</div>
+                                <p class="project-desc">
+                                    Uses FalkorDB to trace what customer PII a CVE actually exposes across code, service mesh, and IAM roles—proves remediation safety in a cloned sandbox graph, then applies surgical, reversible fixes.
+                                </p>
+                                <ul class="project-highlights">
+                                    <li><strong>FalkorDB Multi-Hop Reasoning:</strong> Variable-length Cypher traversal across 9 node labels &amp; 11 relationship types with HNSW vector + full-text anchoring.</li>
+                                    <li><strong>Graph Algorithms &amp; Counterfactuals:</strong> Uses <code>algo.betweenness</code>, <code>algo.SPpaths</code>, and <code>GRAPH.COPY</code> + <code>algo.WCC</code> to cut 6 PII attack paths to 0 while keeping 4/4 critical flows intact.</li>
+                                    <li><strong>MCP Tool Guardrails:</strong> 13 stdio MCP tools enforce critical-tier protection and write reversible <code>ActionAudit</code> nodes.</li>
+                                </ul>
+                                <div class="tag-row">
+                                    <span class="tag">Python 3.12</span>
+                                    <span class="tag">FalkorDB</span>
+                                    <span class="tag">Cypher</span>
+                                    <span class="tag">MCP</span>
+                                    <span class="tag">FastAPI</span>
+                                    <span class="tag">React</span>
+                                </div>
+                                <div class="project-footer">
+                                    <button type="button" class="link-pill primary" data-inspect-study="aegisgraph">Inspect Case Study →</button>
+                                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                        <a href="https://github.com/Hellinferno/graph-hack-/blob/main/aegisgraph_demo.mp4" target="_blank" rel="noopener noreferrer" class="link-pill">Demo Video ↗</a>
+                                        <a href="https://github.com/Hellinferno/graph-hack-" target="_blank" rel="noopener noreferrer" class="link-pill">GitHub Repo ↗</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Project 3: StudyLab -->
+                        <article class="card project-card reveal">
+                            <div class="project-media">
+                                <div class="svg-preview-stage cyan" role="img" aria-label="StudyLab modular gateway, hybrid RAG, and AST-sandboxed solver architecture">
+                                    <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#94a3b8;">
+                                        <span>STUDYLAB · PHASE 0-2 SLICE</span>
+                                        <span style="color:#22d3ee;">FALSE_VERIFIED_RATE == 0</span>
+                                    </div>
+                                    <svg viewBox="0 0 520 190" width="100%" height="145" aria-hidden="true">
+                                        <rect x="14" y="28" width="130" height="132" rx="8" fill="#0b1526" stroke="#06b6d4" stroke-width="1.5"/>
+                                        <text x="79" y="54" fill="#67e8f9" font-size="10" text-anchor="middle" font-weight="bold">gateway :8000</text>
+                                        <text x="79" y="76" fill="#cbd5e1" font-size="8.5" text-anchor="middle">Notebooks &amp; Guides</text>
+                                        <text x="79" y="96" fill="#cbd5e1" font-size="8.5" text-anchor="middle">Quizzes &amp; Papers</text>
+                                        <text x="79" y="116" fill="#cbd5e1" font-size="8.5" text-anchor="middle">Whiteboard &amp; OCR</text>
+                                        <text x="79" y="136" fill="#94a3b8" font-size="8" text-anchor="middle">Notion Export</text>
+
+                                        <line x1="144" y1="62" x2="188" y2="62" stroke="#06b6d4" stroke-width="1.6"/>
+                                        <line x1="144" y1="128" x2="188" y2="128" stroke="#10b981" stroke-width="1.6"/>
+
+                                        <rect x="190" y="22" width="155" height="72" rx="8" fill="#0b1526" stroke="#38bdf8" stroke-width="1.5"/>
+                                        <text x="267" y="44" fill="#bae6fd" font-size="9.5" text-anchor="middle" font-weight="bold">rag :8001</text>
+                                        <text x="267" y="62" fill="#cbd5e1" font-size="8" text-anchor="middle">Sparse + Dense + Rerank</text>
+                                        <text x="267" y="78" fill="#94a3b8" font-size="7.5" text-anchor="middle">Char-Offset Citations</text>
+
+                                        <rect x="190" y="104" width="155" height="68" rx="8" fill="#0b1e1b" stroke="#10b981" stroke-width="1.5"/>
+                                        <text x="267" y="124" fill="#6ee7b7" font-size="9.5" text-anchor="middle" font-weight="bold">solver :8002</text>
+                                        <text x="267" y="142" fill="#cbd5e1" font-size="8" text-anchor="middle">AST Allowlist + python -I -S</text>
+                                        <text x="267" y="158" fill="#94a3b8" font-size="7.5" text-anchor="middle">Symbolic &amp; Finance Formulas</text>
+
+                                        <line x1="345" y1="58" x2="386" y2="92" stroke="#64748b" stroke-width="1.4"/>
+                                        <line x1="345" y1="138" x2="386" y2="98" stroke="#64748b" stroke-width="1.4"/>
+
+                                        <rect x="388" y="48" width="118" height="92" rx="8" fill="#111827" stroke="#94a3b8" stroke-width="1.3"/>
+                                        <text x="447" y="74" fill="#f1f5f9" font-size="9" text-anchor="middle" font-weight="bold">Persistence</text>
+                                        <text x="447" y="95" fill="#cbd5e1" font-size="8" text-anchor="middle">SQLite / Postgres</text>
+                                        <text x="447" y="114" fill="#94a3b8" font-size="7.5" text-anchor="middle">Migrations Parity</text>
+                                        <text x="447" y="130" fill="#22d3ee" font-size="7.5" text-anchor="middle">Eval Gate Verified</text>
+                                    </svg>
+                                    <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#64748b;">
+                                        <span>Gateway · RAG · Solver Microservices</span>
+                                        <span>Docker Compose · SQLite</span>
+                                    </div>
+                                </div>
+                                <span class="project-badge">Modular 3-Service Architecture</span>
+                            </div>
+                            <div class="project-body">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">StudyLab</h3>
+                                </div>
+                                <div class="project-subtitle">Modular AI Learning, Hybrid RAG &amp; Verified Solver Platform</div>
+                                <p class="project-desc">
+                                    NotebookLM-inspired study workstation for AI, data science, and finance learners—combining source ingestion, hybrid cited retrieval, and isolated code-execution solving.
+                                </p>
+                                <ul class="project-highlights">
+                                    <li><strong>Hybrid RAG &amp; Citations:</strong> Pairs sparse keyword scoring (exact formulas/tickers) with dense embeddings, reranking, character-offset citations, and low-confidence rejection.</li>
+                                    <li><strong>AST-Validated Sandbox:</strong> Executes Python solver snippets in isolated <code>python -I -S</code> subprocesses with zero filesystem/network escapes.</li>
+                                    <li><strong>Zero False-Verified Gate:</strong> Evaluation suite (<code>run_eval.py</code>) enforces <code>false_verified_rate = 0</code> across durable SQLite and Docker Compose services.</li>
+                                </ul>
+                                <div class="tag-row">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">Hybrid RAG</span>
+                                    <span class="tag">SQLite / Postgres</span>
+                                    <span class="tag">AST Sandbox</span>
+                                    <span class="tag">Docker Compose</span>
+                                </div>
+                                <div class="project-footer">
+                                    <button type="button" class="link-pill primary" data-inspect-study="studylab">Inspect Case Study →</button>
+                                    <a href="https://github.com/Hellinferno/Tutor-AI-" target="_blank" rel="noopener noreferrer" class="link-pill">GitHub Repo ↗</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Project 4: FinMod-Agent -->
+                        <article class="card project-card reveal">
+                            <div class="project-media">
+                                <div class="svg-preview-stage amber" role="img" aria-label="FinMod-Agent valuation pipeline, DCF sensitivity matrix, and 9-screen React cockpit">
+                                    <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:#94a3b8;">
+                                        <span>FMVA · VALUATION ENGINE</span>
+                                        <span style="color:#fbbf24;">40 / 40 PYTEST PASSING</span>
+                                    </div>
+                                    <svg viewBox="0 0 520 190" width="100%" height="145" aria-hidden="true">
+                                        <!-- Pipeline Boxes -->
+                                        <rect x="12" y="20" width="112" height="44" rx="6" fill="#18181b" stroke="#f59e0b" stroke-width="1.4"/>
+                                        <text x="68" y="39" fill="#fde68a" font-size="8.5" text-anchor="middle">JSON Normalize</text>
+                                        <text x="68" y="53" fill="#a8a29e" font-size="7.5" text-anchor="middle">500+ Aliases</text>
+
+                                        <line x1="124" y1="42" x2="146" y2="42" stroke="#f59e0b" stroke-width="1.5"/>
+
+                                        <rect x="148" y="20" width="112" height="44" rx="6" fill="#18181b" stroke="#f59e0b" stroke-width="1.4"/>
+                                        <text x="204" y="39" fill="#fde68a" font-size="8.5" text-anchor="middle">BS Plug Check</text>
+                                        <text x="204" y="53" fill="#a8a29e" font-size="7.5" text-anchor="middle">Pydantic Schemas</text>
+
+                                        <line x1="260" y1="42" x2="282" y2="42" stroke="#f59e0b" stroke-width="1.5"/>
+
+                                        <rect x="284" y="20" width="112" height="44" rx="6" fill="#18181b" stroke="#fbbf24" stroke-width="1.4"/>
+                                        <text x="340" y="39" fill="#fef3c7" font-size="8.5" text-anchor="middle">DCF + CAPM WACC</text>
+                                        <text x="340" y="53" fill="#a8a29e" font-size="7.5" text-anchor="middle">yfinance Comps</text>
+
+                                        <line x1="396" y1="42" x2="418" y2="42" stroke="#f59e0b" stroke-width="1.5"/>
+
+                                        <rect x="420" y="20" width="88" height="44" rx="6" fill="#18181b" stroke="#10b981" stroke-width="1.4"/>
+                                        <text x="464" y="39" fill="#6ee7b7" font-size="8.5" text-anchor="middle">Audit + XLSX</text>
+                                        <text x="464" y="53" fill="#a8a29e" font-size="7.5" text-anchor="middle">Immutable Log</text>
+
+                                        <!-- Sensitivity Heatmap Grid -->
+                                        <rect x="12" y="84" width="265" height="90" rx="8" fill="#111114" stroke="#3f3f46" stroke-width="1.2"/>
+                                        <text x="24" y="102" fill="#d6d3d1" font-size="8.5">2D Sensitivity Matrix (WACC × TGR)</text>
+                                        <rect x="24" y="112" width="54" height="16" rx="3" fill="#78350f"/>
+                                        <rect x="82" y="112" width="54" height="16" rx="3" fill="#92400e"/>
+                                        <rect x="140" y="112" width="54" height="16" rx="3" fill="#b45309"/>
+                                        <rect x="198" y="112" width="54" height="16" rx="3" fill="#d97706"/>
+                                        <rect x="24" y="132" width="54" height="16" rx="3" fill="#92400e"/>
+                                        <rect x="82" y="132" width="54" height="16" rx="3" fill="#b45309"/>
+                                        <rect x="140" y="132" width="54" height="16" rx="3" fill="#d97706"/>
+                                        <rect x="198" y="132" width="54" height="16" rx="3" fill="#f59e0b"/>
+                                        <rect x="24" y="152" width="54" height="16" rx="3" fill="#b45309"/>
+                                        <rect x="82" y="152" width="54" height="16" rx="3" fill="#d97706"/>
+                                        <rect x="140" y="152" width="54" height="16" rx="3" fill="#f59e0b"/>
+                                        <rect x="198" y="152" width="54" height="16" rx="3" fill="#fbbf24"/>
+
+                                        <!-- 9-Screen React Status -->
+                                        <rect x="292" y="84" width="216" height="90" rx="8" fill="#111114" stroke="#3f3f46" stroke-width="1.2"/>
+                                        <text x="306" y="102" fill="#d6d3d1" font-size="8.5">9-Screen React Cockpit</text>
+                                        <text x="306" y="122" fill="#fbbf24" font-size="8">• DCF · Comps · 3-Statement</text>
+                                        <text x="306" y="139" fill="#a8a29e" font-size="8">• Bear / Base / Bull Scenarios</text>
+                                        <text x="306" y="156" fill="#6ee7b7" font-size="8">• Audit Trail &amp; Excel Export</text>
+                                    </svg>
+                                    <div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#78716c;">
+                                        <span>DCF · WACC · Comps · Sensitivity</span>
+                                        <span>FastAPI + React + Recharts</span>
+                                    </div>
+                                </div>
+                                <span class="project-badge">40 / 40 Pytest Passing</span>
+                            </div>
+                            <div class="project-body">
+                                <div class="project-title-row">
+                                    <h3 class="project-title">FinMod-Agent (FMVA)</h3>
+                                </div>
+                                <div class="project-subtitle">Deterministic Financial Modeling &amp; Valuation Engine</div>
+                                <p class="project-desc">
+                                    Institutional-grade company valuation engine combining 500+ alias financial normalization, CAPM WACC, Gordon Growth &amp; Exit Multiple DCF, comparable companies, and a 9-screen React UI.
+                                </p>
+                                <ul class="project-highlights">
+                                    <li><strong>Valuation Engines:</strong> Full UFCF DCF, live-beta CAPM WACC, peer multiples via <code>yfinance</code>, and Bear/Base/Bull scenario presets.</li>
+                                    <li><strong>Sensitivity &amp; Auditability:</strong> 2D WACC × TGR matrices with monotonicity checks and immutable step-by-step calculation logs.</li>
+                                    <li><strong>Production Exports &amp; UI:</strong> Multi-sheet Excel workbooks, structured JSON API, and 9-screen Vite/React/Recharts workstation.</li>
+                                </ul>
+                                <div class="tag-row">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">FastAPI</span>
+                                    <span class="tag">Pydantic</span>
+                                    <span class="tag">React</span>
+                                    <span class="tag">Recharts</span>
+                                    <span class="tag">yfinance</span>
+                                </div>
+                                <div class="project-footer">
+                                    <button type="button" class="link-pill primary" data-inspect-study="finmod">Inspect Case Study →</button>
+                                    <a href="https://github.com/Hellinferno/finmod-agent" target="_blank" rel="noopener noreferrer" class="link-pill">GitHub Repo ↗</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Additional Verified Systems -->
+                    <h3 class="sub-heading reveal">More Open-Source Systems on GitHub</h3>
+                    <div class="mini-repos-grid">
+                        <article class="card mini-repo-card reveal">
+                            <div class="mini-repo-thumb">
+                                <img src="assets/procureops-cover.png" alt="ProcureOps AI purchasing and treasury workspace screenshot" loading="lazy">
+                            </div>
+                            <h4>ProcureOps AI</h4>
+                            <p>Rust (Axum/Tokio) + Next.js + AG Grid procurement cockpit enforcing typed purchase mandates and PayPal Sandbox capture/payout reconciliation.</p>
+                            <div class="tag-row" style="margin-bottom:12px;">
+                                <span class="tag">Rust</span>
+                                <span class="tag">Next.js</span>
+                                <span class="tag">PayPal SDK</span>
+                            </div>
+                            <a href="https://github.com/Hellinferno/procureops-ai" target="_blank" rel="noopener noreferrer" class="link-pill">View Repo ↗</a>
+                        </article>
+
+                        <article class="card mini-repo-card reveal">
+                            <h4>Leadforge Platform</h4>
+                            <p>Multi-user career acceleration platform on Cloudflare Workers, D1 SQLite, Drizzle ORM &amp; React 19 with ATS resume builder and Greenhouse/Lever job scraper.</p>
+                            <div class="tag-row" style="margin-bottom:12px;">
+                                <span class="tag">TypeScript</span>
+                                <span class="tag">Cloudflare D1</span>
+                                <span class="tag">React 19</span>
+                            </div>
+                            <a href="https://github.com/Hellinferno/leadforge-career-platform" target="_blank" rel="noopener noreferrer" class="link-pill">View Repo ↗</a>
+                        </article>
+
+                        <article class="card mini-repo-card reveal">
+                            <h4>AyaWeightDoctor</h4>
+                            <p>Zero-gradient rank-1 weight surgery in Layer 16 of <code>CohereLabs/tiny-aya-earth</code> (3.35B), altering 0.6731% of weights in 0.02s to restore alignment without over-refusal.</p>
+                            <div class="tag-row" style="margin-bottom:12px;">
+                                <span class="tag">PyTorch</span>
+                                <span class="tag">Safety</span>
+                                <span class="tag">Gradio</span>
+                            </div>
+                            <a href="https://github.com/Hellinferno/AyaWeightDoctor" target="_blank" rel="noopener noreferrer" class="link-pill">View Repo ↗</a>
+                        </article>
+
+                        <article class="card mini-repo-card reveal">
+                            <h4>SQL Query Reviewer</h4>
+                            <p>OpenEnv RL environment (GRPO/PPO-ready) with shaped, deterministic per-step rewards across 20 production SQL correctness, indexing, and security tasks.</p>
+                            <div class="tag-row" style="margin-bottom:12px;">
+                                <span class="tag">Python</span>
+                                <span class="tag">OpenEnv RL</span>
+                                <span class="tag">Docker</span>
+                            </div>
+                            <a href="https://github.com/Hellinferno/Meta-hackathon" target="_blank" rel="noopener noreferrer" class="link-pill">View Repo ↗</a>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 04. INTERACTIVE PROJECT CASE STUDIES -->
+            <section id="case-studies" class="section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 03 Architecture &amp; Case Studies</span>
+                            <h2 class="section-title">Deep Dive: Problem, Architecture &amp; Verification</h2>
+                        </div>
+                        <p class="section-lead">Select any flagship project and inspect its engineering tradeoffs, schema/code contracts, and automated test verification.</p>
+                    </div>
+
+                    <div class="case-study-shell reveal">
+                        <div class="case-selector-bar" role="tablist" aria-label="Select Project Case Study">
+                            <button type="button" class="case-select-btn" data-case-select="claimlab" aria-selected="true">01. ClaimLab</button>
+                            <button type="button" class="case-select-btn" data-case-select="aegisgraph" aria-selected="false">02. AegisGraph</button>
+                            <button type="button" class="case-select-btn" data-case-select="studylab" aria-selected="false">03. StudyLab</button>
+                            <button type="button" class="case-select-btn" data-case-select="finmod" aria-selected="false">04. FinMod-Agent</button>
+                        </div>
+
+                        <div class="case-tabs-bar" role="tablist" aria-label="Case Study Sections">
+                            <button type="button" class="case-tab-btn" data-case-tab="overview" aria-selected="true">Overview &amp; Problem</button>
+                            <button type="button" class="case-tab-btn" data-case-tab="problem" aria-selected="false">Challenges &amp; Invariants</button>
+                            <button type="button" class="case-tab-btn" data-case-tab="architecture" aria-selected="false">System Architecture</button>
+                            <button type="button" class="case-tab-btn" data-case-tab="verification" aria-selected="false">Verification &amp; Results</button>
+                        </div>
+
+                        <div id="case-study-panel" class="case-content" aria-live="polite">
+                            <!-- Rendered dynamically by script.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 05. TECHNICAL SKILLS -->
+            <section id="skills" class="section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 04 Technical Skills</span>
+                            <h2 class="section-title">Categorized Technologies</h2>
+                        </div>
+                        <p class="section-lead">Every language, framework, and tool listed below is backed directly by shipped code and test suites in my public repositories.</p>
+                    </div>
+
+                    <div class="skills-grid">
+                        <div class="card skill-card reveal">
+                            <h3>Languages</h3>
+                            <div class="tag-row">
+                                <span class="tag">Python</span>
+                                <span class="tag">SQL</span>
+                                <span class="tag">TypeScript</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Rust</span>
+                            </div>
+                            <p class="skill-evidence">Used across ClaimLab, AegisGraph, FinMod-Agent, Leadforge, and ProcureOps AI.</p>
+                        </div>
+
+                        <div class="card skill-card reveal">
+                            <h3>AI / ML</h3>
+                            <div class="tag-row">
+                                <span class="tag">NumPy</span>
+                                <span class="tag">Pandas</span>
+                                <span class="tag">SciPy</span>
+                                <span class="tag">Scikit-learn</span>
+                                <span class="tag">PyTorch</span>
+                                <span class="tag">LLMs</span>
+                            </div>
+                            <p class="skill-evidence">Float64 numerical recipes, rank-1 weight surgery, and statistical/macro modeling.</p>
+                        </div>
+
+                        <div class="card skill-card reveal">
+                            <h3>AI Engineering</h3>
+                            <div class="tag-row">
+                                <span class="tag">Hybrid RAG</span>
+                                <span class="tag">Embeddings</span>
+                                <span class="tag">Tool Calling</span>
+                                <span class="tag">MCP</span>
+                                <span class="tag">Agent Evaluation</span>
+                            </div>
+                            <p class="skill-evidence">13 stdio MCP tools in AegisGraph; sparse+dense retrieval &amp; eval gates in StudyLab.</p>
+                        </div>
+
+                        <div class="card skill-card reveal">
+                            <h3>Backend &amp; Databases</h3>
+                            <div class="tag-row">
+                                <span class="tag">FastAPI</span>
+                                <span class="tag">REST APIs</span>
+                                <span class="tag">FalkorDB (Cypher)</span>
+                                <span class="tag">SQLite</span>
+                                <span class="tag">PostgreSQL</span>
+                                <span class="tag">Cloudflare D1</span>
+                            </div>
+                            <p class="skill-evidence">Graph topology + HNSW vector search, SQLite/Postgres migrations, and D1 workspaces.</p>
+                        </div>
+
+                        <div class="card skill-card reveal">
+                            <h3>Frontend</h3>
+                            <div class="tag-row">
+                                <span class="tag">React 19</span>
+                                <span class="tag">Next.js</span>
+                                <span class="tag">Tailwind CSS</span>
+                                <span class="tag">Vite</span>
+                                <span class="tag">Recharts</span>
+                            </div>
+                            <p class="skill-evidence">Interactive SVG whiteboard in ClaimLab, 9-screen FMVA cockpit, and AG Grid ledger.</p>
+                        </div>
+
+                        <div class="card skill-card reveal">
+                            <h3>Engineering &amp; Tooling</h3>
+                            <div class="tag-row">
+                                <span class="tag">Git &amp; GitHub</span>
+                                <span class="tag">GitHub Actions CI</span>
+                                <span class="tag">Docker</span>
+                                <span class="tag">pytest</span>
+                                <span class="tag">Cloudflare Workers</span>
+                            </div>
+                            <p class="skill-evidence">Automated CI workflows, multi-service Docker Compose, and deterministic test suites.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 06. OPEN SOURCE & VERIFIED ACHIEVEMENTS -->
+            <section id="opensource" class="section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 05 Open Source &amp; Achievements</span>
+                            <h2 class="section-title">Pull Requests, Engineering Rigor &amp; Credentials</h2>
+                        </div>
+                    </div>
+
+                    <div class="os-grid">
+                        <div class="card reveal">
+                            <span class="section-eyebrow" style="margin-bottom:6px;">Open-Source Practice &amp; Transparency</span>
+                            <h3 style="font-family:var(--font-display);font-size:1.35rem;margin-bottom:12px;">Owned OSS Projects vs. Upstream Contributions</h3>
+                            <p style="color:var(--text-secondary);font-size:0.93rem;margin-bottom:14px;">
+                                I publish my major builds (<strong>ClaimLab</strong>, <strong>AegisGraph</strong>, <strong>StudyLab</strong>, <strong>FinMod-Agent</strong>) openly under permissive licenses with reproducible setup instructions, architectural docs, and CI checks.
+                            </p>
+                            <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:14px;">
+                                To keep my record strictly accurate: my current public pull request history consists of feature, database migration, and CI-fix PRs across my own and collaborative hackathon repositories rather than third-party upstream repositories.
+                            </p>
+                            <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:0;">
+                                <strong>Why MLH Fellowship:</strong> I am applying specifically to collaborate with maintainers and fellows on established open-source ecosystems at production scale.
+                            </p>
+                        </div>
+
+                        <div class="card reveal">
+                            <span class="section-eyebrow" style="margin-bottom:6px;">Verifiable GitHub Pull Requests</span>
+                            <div class="pr-table">
+                                <a href="https://github.com/Hellinferno/Meta-hackathon/pull/1" target="_blank" rel="noopener noreferrer" class="pr-item">
+                                    <div>
+                                        <div class="pr-title">Fix CI pytest collection by packaging server &amp; inference</div>
+                                        <div class="pr-repo">Hellinferno/Meta-hackathon #1</div>
+                                    </div>
+                                    <span class="pr-state">Merged / Closed</span>
+                                </a>
+                                <a href="https://github.com/Hellinferno/nebious-Nvidia-/pull/1" target="_blank" rel="noopener noreferrer" class="pr-item">
+                                    <div>
+                                        <div class="pr-title">Day 15 hardening + B-19 fair-baseline trial harness</div>
+                                        <div class="pr-repo">Hellinferno/nebious-Nvidia- #1</div>
+                                    </div>
+                                    <span class="pr-state">Closed</span>
+                                </a>
+                                <a href="https://github.com/Hellinferno/Investment-banking-analyst-/pull/1" target="_blank" rel="noopener noreferrer" class="pr-item">
+                                    <div>
+                                        <div class="pr-title">Add SerpApi company intelligence, cited research &amp; diligence review</div>
+                                        <div class="pr-repo">Hellinferno/Investment-banking-analyst- #1</div>
+                                    </div>
+                                    <span class="pr-state">Open</span>
+                                </a>
+                                <a href="https://github.com/Hellinferno/Micro-cfo/pull/11" target="_blank" rel="noopener noreferrer" class="pr-item">
+                                    <div>
+                                        <div class="pr-title">Fix CI database setup: index conflicts &amp; PostgreSQL compatibility</div>
+                                        <div class="pr-repo">Hellinferno/Micro-cfo #11 · #12 · #13</div>
+                                    </div>
+                                    <span class="pr-state">Open</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-heading reveal">Verified Certifications, Hackathons &amp; Programs</h3>
+                    <div class="certs-grid">
+                        <article class="card cert-card reveal">
+                            <div>
+                                <span class="cert-issuer">Anthropic · Jul 2026</span>
+                                <h4 class="cert-name">AI Fluency: Framework &amp; Foundations</h4>
+                            </div>
+                            <div class="cert-meta">Credential ID: hfgjbcbbuieb</div>
+                        </article>
+
+                        <article class="card cert-card reveal">
+                            <div>
+                                <span class="cert-issuer">Anthropic · Jul 2026</span>
+                                <h4 class="cert-name">Introduction to Claude Cowork</h4>
+                            </div>
+                            <div class="cert-meta">Credential ID: e9wrvx2bu8yw</div>
+                        </article>
+
+                        <article class="card cert-card reveal">
+                            <div>
+                                <span class="cert-issuer">Anthropic · Jul 2026</span>
+                                <h4 class="cert-name">Claude 101</h4>
+                            </div>
+                            <div class="cert-meta">Credential ID: nrhjymrbxwic</div>
+                        </article>
+
+                        <article class="card cert-card reveal">
+                            <div>
+                                <span class="cert-issuer">Harvard University · Aspire Institute</span>
+                                <h4 class="cert-name">Aspire Leaders Programme</h4>
+                            </div>
+                            <div class="cert-meta">Global Leadership &amp; Analytical Cohort</div>
+                        </article>
+
+                        <article class="card cert-card reveal">
+                            <div>
+                                <span class="cert-issuer">IIT Guwahati · Jan 2026</span>
+                                <h4 class="cert-name">Convolve 4.0 — A Pan-IIT AI/ML Hackathon</h4>
+                            </div>
+                            <div class="cert-meta">ID: 0587520d-e669-45e4-af1d-90ba7bd35a16</div>
+                        </article>
+
+                        <article class="card cert-card reveal">
+                            <div>
+                                <span class="cert-issuer">Kaggle (Google) · Dec 2025 &amp; BCG · Oct 2025</span>
+                                <h4 class="cert-name">5-Day AI Agents Intensive &amp; BCG Strategy Simulation</h4>
+                            </div>
+                            <div class="cert-meta">Multi-Agent Tooling &amp; Strategic Valuation</div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 07. EDUCATION -->
+            <section id="education" class="section">
+                <div class="container">
+                    <div class="section-header reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 06 Education</span>
+                            <h2 class="section-title">Academic &amp; Professional Foundation</h2>
+                        </div>
+                        <a href="https://www.linkedin.com/in/raviiitcaintermidiate/" target="_blank" rel="noopener noreferrer" class="link-pill">View LinkedIn Profile ↗</a>
+                    </div>
+
+                    <div class="edu-grid">
+                        <article class="card edu-card reveal">
+                            <div class="edu-period">2025 — 2029</div>
+                            <h3>Indian Institute of Technology (IIT) Jodhpur</h3>
+                            <div class="edu-degree">B.Sc. in Applied AI and Data Science</div>
+                            <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:14px;">
+                                Core focus on Python, Machine Learning, Statistical Learning, Data Structures &amp; Algorithms, Linear Algebra, and Optimization. Active in the AI Club and national/global AI engineering hackathons.
+                            </p>
+                            <div class="tag-row" style="margin-bottom:0;">
+                                <span class="tag">Applied AI</span>
+                                <span class="tag">Data Science</span>
+                                <span class="tag">Algorithms</span>
+                            </div>
+                        </article>
+
+                        <article class="card edu-card reveal">
+                            <div class="edu-period">2025 — Present (CA Foundation Cleared)</div>
+                            <h3>Institute of Chartered Accountants of India (ICAI)</h3>
+                            <div class="edu-degree">CA Intermediate Candidate</div>
+                            <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:14px;">
+                                Rigorous domain training in Financial Reporting, Corporate Finance, Costing, Taxation Law, Auditing, and Regulatory Compliance—directly informing deterministic audit &amp; valuation software.
+                            </p>
+                            <div class="tag-row" style="margin-bottom:0;">
+                                <span class="tag">Financial Reporting</span>
+                                <span class="tag">Auditing</span>
+                                <span class="tag">Corporate Finance</span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 08. CONTACT & RESUME -->
+            <section id="contact" class="section">
+                <div class="container">
+                    <div class="card contact-box reveal">
+                        <div>
+                            <span class="section-eyebrow">/ 07 Contact &amp; Resume</span>
+                            <h2 class="section-title" style="margin-bottom:12px;">Let's build something verifiable.</h2>
+                            <p style="color:var(--text-muted);max-width:540px;">
+                                Open to MLH Fellowship tracks, AI engineering &amp; open-source collaborations, and systems engineering internships.
+                            </p>
+
+                            <a href="mailto:b25bs1273@iitj.ac.in" class="contact-email-display">b25bs1273@iitj.ac.in</a>
+
+                            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                                <a href="mailto:b25bs1273@iitj.ac.in" class="btn btn-primary">Send Email ↗</a>
+                                <button type="button" id="copy-email-btn" class="btn btn-secondary">Copy Email</button>
+                                <a href="assets/Ravi_Resume.pdf" download="Ravi_Resume.pdf" class="btn btn-ghost">Download Resume PDF ↓</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-links-stack">
+                            <a href="https://github.com/Hellinferno" target="_blank" rel="noopener noreferrer" class="contact-link-tile">
+                                <div>
+                                    <strong>GitHub</strong>
+                                    <span>github.com/Hellinferno</span>
+                                </div>
+                                <span>↗</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/raviiitcaintermidiate/" target="_blank" rel="noopener noreferrer" class="contact-link-tile">
+                                <div>
+                                    <strong>LinkedIn</strong>
+                                    <span>linkedin.com/in/raviiitcaintermidiate</span>
+                                </div>
+                                <span>↗</span>
+                            </a>
+                            <a href="resume.html" class="contact-link-tile">
+                                <div>
+                                    <strong>Interactive Web Resume</strong>
+                                    <span>Print-ready single-page CV</span>
+                                </div>
+                                <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <p>© <span id="year"></span> Ravi · Applied AI &amp; Data Science @ IIT Jodhpur</p>
+                <p style="font-family:var(--font-mono);font-size:0.74rem;">Hosted on Cloudflare Pages · Source on GitHub</p>
             </div>
-        </div>
-    </section>
+        </footer>
+    </div>
 
-    <!-- Work/Projects Section -->
-    <section id="work" class="py-32 px-6 md:px-20 border-t border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-20">
-                <h3 class="text-xs uppercase tracking-widest text-accent reveal">/ 04 Selected Works</h3>
-                <a href="https://github.com/Hellinferno" target="_blank" class="text-sm uppercase tracking-widest border-b border-white/30 pb-1 hover:border-white transition-colors magnetic hover-trigger reveal">View Github</a>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                
-                <!-- Project 1 -->
-                <a href="https://github.com/Hellinferno/VouchVault-AI" target="_blank" class="block group reveal hover-trigger tilt-card">
-                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">VouchVault-AI</h4>
-                    </div>
-                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
-                        <div class="pr-4">
-                            <h5 class="text-xl font-medium">Autonomous Financial Audit Agent</h5>
-                            <p class="text-accent text-sm mt-1 mb-3">Python • Gemini 1.5 Flash</p>
-                            <p class="text-white/60 text-sm leading-relaxed">Automates complex compliance checks and financial anomaly detection, leveraging advanced LLM reasoning to simulate a human auditor's logic.</p>
-                        </div>
-                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
-                            →
-                        </span>
-                    </div>
-                </a>
-
-                <!-- Project 2 -->
-                <a href="https://github.com/Hellinferno/rbi_correlation_analysis" target="_blank" class="block group reveal hover-trigger tilt-card md:mt-24">
-                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Eco-Analyzer</h4>
-                    </div>
-                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
-                        <div class="pr-4">
-                            <h5 class="text-xl font-medium">Economic Data Correlation (RBI)</h5>
-                            <p class="text-accent text-sm mt-1 mb-3">Python • Data Science</p>
-                            <p class="text-white/60 text-sm leading-relaxed">Analyzes correlations across large-scale macroeconomic datasets from the RBI, uncovering hidden trends and predictive signals for financial markets.</p>
-                        </div>
-                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
-                            →
-                        </span>
-                    </div>
-                </a>
-
-                <!-- Project 3 -->
-                <a href="https://github.com/Hellinferno/business-analyst" target="_blank" class="block group reveal hover-trigger tilt-card">
-                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Business Analyst</h4>
-                    </div>
-                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
-                        <div class="pr-4">
-                            <h5 class="text-xl font-medium">AI Business Intelligence</h5>
-                            <p class="text-accent text-sm mt-1 mb-3">Python • AI Agent</p>
-                            <p class="text-white/60 text-sm leading-relaxed">An AI-powered business intelligence system that synthesizes market research and financial statements to deliver actionable, data-driven insights.</p>
-                        </div>
-                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
-                            →
-                        </span>
-                    </div>
-                </a>
-
-                 <!-- Project 4 -->
-                 <a href="https://github.com/Hellinferno/Amazon-agent-hotel" target="_blank" class="block group reveal hover-trigger tilt-card md:mt-24">
-                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Amazon Agent</h4>
-                    </div>
-                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
-                        <div class="pr-4">
-                            <h5 class="text-xl font-medium">Automated Booking Agent</h5>
-                            <p class="text-accent text-sm mt-1 mb-3">Python • AI</p>
-                            <p class="text-white/60 text-sm leading-relaxed">An intelligent, automated booking and customer interaction agent built to streamline and manage complex hospitality workflows with AI.</p>
-                        </div>
-                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
-                            →
-                        </span>
-                    </div>
-                </a>
-
-                <!-- Project 5 -->
-                <a href="https://github.com/Hellinferno/Meta-hackathon" target="_blank" class="block group reveal hover-trigger tilt-card">
-                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Meta Hackathon</h4>
-                    </div>
-                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
-                        <div class="pr-4">
-                            <h5 class="text-xl font-medium">AI Inference Server</h5>
-                            <p class="text-accent text-sm mt-1 mb-3">Python • Pytest</p>
-                            <p class="text-white/60 text-sm leading-relaxed">A high-performance AI inference server architecture built rigorously to ensure flawless scalability, data integrity, and low-latency responses.</p>
-                        </div>
-                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
-                            →
-                        </span>
-                    </div>
-                </a>
-
-                <!-- Project 6 -->
-                <a href="https://github.com/Hellinferno/upra" target="_blank" class="block group reveal hover-trigger tilt-card md:mt-24">
-                    <div class="w-full aspect-[4/3] bg-[#111] border border-white/5 overflow-hidden relative flex items-center justify-center rounded-sm">
-                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                        <h4 class="text-3xl md:text-5xl font-serif text-white/20 group-hover:text-white/80 transition-colors duration-700 tilt-content px-4 text-center">Upra</h4>
-                    </div>
-                    <div class="mt-6 flex justify-between items-start px-2 tilt-content">
-                        <div class="pr-4">
-                            <h5 class="text-xl font-medium">Frontend Web App</h5>
-                            <p class="text-accent text-sm mt-1 mb-3">JavaScript</p>
-                            <p class="text-white/60 text-sm leading-relaxed">A modern, responsive frontend web application focusing on fluid user experiences, clean architectural principles, and custom UI components.</p>
-                        </div>
-                        <span class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-dark transition-colors duration-500 shrink-0 mt-1">
-                            →
-                        </span>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer / Contact -->
-    <section id="contact" class="py-32 px-6 md:px-20 border-t border-white/5 relative overflow-hidden">
-        <!-- Abstract background glow -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white opacity-[0.02] blur-[100px] rounded-full pointer-events-none"></div>
-        
-        <div class="max-w-5xl mx-auto text-center relative z-10">
-            <h3 class="text-xs uppercase tracking-widest text-accent mb-12 reveal">/ 05 Let's Connect</h3>
-            <div class="flex justify-center gap-8 flex-wrap reveal reveal-delay-1">
-                <a href="https://www.linkedin.com/in/raviiitcaintermidiate/" target="_blank" class="text-lg uppercase tracking-widest hover:text-accent transition-colors magnetic hover-trigger">LinkedIn</a>
-                <a href="https://github.com/Hellinferno" target="_blank" class="text-lg uppercase tracking-widest hover:text-accent transition-colors magnetic hover-trigger">GitHub</a>
-                <a href="mailto:hello@example.com" class="text-lg uppercase tracking-widest hover:text-accent transition-colors magnetic hover-trigger">Email</a>
-            </div>
-        </div>
-        
-        <div class="mt-32 text-center text-xs text-accent/50 reveal">
-            <p>© <span id="year"></span> Ravi. All rights reserved.</p>
-        </div>
-    </section>
-
-    <!-- Interactions & Scripts -->
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // 1. Custom Cursor Logic
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorOutline = document.getElementById('cursor-outline');
-        let mouseX = 0, mouseY = 0;
-        let outlineX = 0, outlineY = 0;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            // Dot follows instantly
-            cursorDot.style.left = `${mouseX}px`;
-            cursorDot.style.top = `${mouseY}px`;
-        });
-
-        // Smooth outline follow
-        function animateCursor() {
-            let distX = mouseX - outlineX;
-            let distY = mouseY - outlineY;
-            
-            outlineX += distX * 0.15;
-            outlineY += distY * 0.15;
-            
-            cursorOutline.style.left = `${outlineX}px`;
-            cursorOutline.style.top = `${outlineY}px`;
-            
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        // Hover States for Cursor
-        const hoverTriggers = document.querySelectorAll('.hover-trigger');
-        hoverTriggers.forEach(trigger => {
-            trigger.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
-
-        // 2. Scroll Reveal Logic (Intersection Observer)
-        const revealElements = document.querySelectorAll('.reveal, .text-reveal');
-        
-        const revealOptions = {
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Reveal only once
-            });
-        }, revealOptions);
-
-        revealElements.forEach(el => revealOnScroll.observe(el));
-
-        // 3. Magnetic Buttons (Touch/Mouse Effect)
-        const magnetics = document.querySelectorAll('.magnetic');
-        
-        magnetics.forEach(btn => {
-            btn.addEventListener('mousemove', function(e) {
-                const position = btn.getBoundingClientRect();
-                const x = e.pageX - position.left - position.width / 2;
-                const y = e.pageY - position.top - position.height / 2;
-                
-                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.4}px)`;
-            });
-            
-            btn.addEventListener('mouseout', function(e) {
-                btn.style.transform = 'translate(0px, 0px)';
-            });
-        });
-
-        // 4. 3D Tilt Effect on Cards
-        const tiltCards = document.querySelectorAll('.tilt-card');
-        
-        tiltCards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left; // x position within the element.
-                const y = e.clientY - rect.top;  // y position within the element.
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation 10deg
-                const rotateY = ((x - centerX) / centerX) * 10;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-            });
-        });
-
-        // CSS Animation for scroll indicator
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes scroll-down {
-                0% { transform: translateY(-100%); }
-                50% { transform: translateY(0%); }
-                100% { transform: translateY(100%); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Trigger initial active states for items above fold
-        setTimeout(() => {
-            document.querySelectorAll('.text-reveal').forEach(el => {
-                const rect = el.getBoundingClientRect();
-                if(rect.top < window.innerHeight) {
-                    el.classList.add('active');
-                }
-            });
-        }, 100);
-
-    </script>
-
-    <!-- Symbiont Particle System -->
-    <script src="symbiont.js"></script>
+    <!-- Scripts -->
+    <script src="symbiont.js" defer></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
