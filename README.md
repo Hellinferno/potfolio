@@ -1,6 +1,6 @@
 # Ravi — Applied AI & Software Engineering Portfolio
 
-Personal engineering portfolio for **Ravi** (B.Sc. in Applied AI & Data Science @ IIT Jodhpur, CA Intermediate @ ICAI), built for the MLH Fellowship application and hosted on **Cloudflare Pages**.
+Personal engineering portfolio for **Ravi** (B.Sc. in Applied AI & Data Science @ IIT Jodhpur, CA Intermediate @ ICAI), hosted on **Cloudflare Pages**.
 
 - **Live Portfolio (Cloudflare Pages):** https://ravi-portfolio-3zi.pages.dev
 - **GitHub:** https://github.com/Hellinferno
